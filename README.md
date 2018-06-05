@@ -58,3 +58,11 @@ Take HTML mashup (Code) for example,
 
 Please note!
 The necessary cert and keystore files were not uploaded to this repository for security reasons, please follow the above mentioned  https://github.com/SAP/C4CODATAAPIDEVGUIDE to setup the needed artifacts for OAuth flow.
+
+# Download SAP Trust Center Root CA Certificate
+You can download the SAP Trust Center Root CA certificate here at 
+https://support.sap.com/en/offerings-programs/support-services/trust-center-services.html
+
+Or directly from https://tcs.mysap.com/invoke/tc/getCert?SAPPassportCA.der
+
+This root CA cert is used to verify the OAuth information submitted by the mashups, so they are not tampered by any unaurhorized person.
