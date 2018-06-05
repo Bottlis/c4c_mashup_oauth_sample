@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Mashup SSO Test in extended Apps</title>
+<script
+	src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.0/jquery.min.js"></script>
+</head>
+<body>
+	<script type="text/javascript">
+		$(function() {
+			debugger;
+			var sSampleAuthInfo = '{"OAuthInfo":{"host":"https://my306768.vlab.sapbydesign.com","user":"administration01","base64_cert":"MIIDJjCCAo+gAwIBAgIOSYANxcENgg0QAwgAfKowDQYJKoZIhvcNAQEFBQAwRTELMAkGA1UEBhMCREUxHDAaBgNVBAoTE1NBUCBUcnVzdCBDb21tdW5pdHkxGDAWBgNVBAMTD1NBUCBQYXNzcG9ydCBDQTAeFw0xODAxMzEyMzAwMzlaFw0xOTAxMzEyMzAwMzlaMHoxCzAJBgNVBAYTAkRFMRwwGgYDVQQKExNTQVAgVHJ1c3QgQ29tbXVuaXR5MS8wLQYDVQQLEyZJMDAwMDAwMDAwNzMwMDUzMzg2IC0gQnVzaW5lc3NCeURlc2lnbjEcMBoGA1UEAxMTTTAwMDAwMDAwMDczMDA1MzM4NjCCASIwDQYJKoZIhvcNAQEBBQADggEPADCCAQoCggEBAP+1/Ocrn/DjEBtjwgcPGTwDUXkV+ji66++0MjUlRlweQipFJ1OUy3Y3Xpey5UMdGBtbEjVpNrhwRkK5bRiNutDK7BxyU1S/CKD5V44skdKR4HeT7f1eafQkHUOtb+KpJS0thueV17dj7gf8nz2YsREAa0bKy7O4QC/j9DpcxFL9H2lGAfbVR6nKxVe3oLblJ4J67YwnPLGlMLEy7fYfcH/CvCFV2CWBW2xp80pJtF3lDMoIaWXn0zUFuhXnv53Zoxj+pvHMjrcCIm6HRLTUA9GQRxgHPP1VyZfhj7CVOBCgJbPg3JmWjYXEQpDO12xAOkn9Ml3dBzOE9ZELklUhyu8CAwEAAaNgMF4wDAYDVR0TAQH/BAIwADAOBgNVHQ8BAf8EBAMCBPAwHQYDVR0OBBYEFDS7WEZdL7KQTPQcprt9eFEIw5OZMB8GA1UdIwQYMBaAFBpERaZXcXBWARx4JHpRNkzANdBeMA0GCSqGSIb3DQEBBQUAA4GBAMcVNcMQdOmXDU096yKpLlTZGsz2pn+fXRqza54wbvGNtVuD1MxkD/jOMkP091xxTyRCQdX74KMa+tGjA75b7ia6u0Eb/DdjpB/y2UWUOpHInL+GW2VyRCH0QHYsP+498xVUht2WShmDJp4TxTJNGLvuwAF8s4of2fXHRoAuA1rt"},"signature":"De7tdcnSht8kqfT/4sdXs0lJ/4QZTErx0NjrNtaGhVHu2EQIoaOnXWpTtr5DS4SXH+CRzpJqNMMq4UsQyXieeJUNTQl9NIvuUz+DXKJPTfFoMqGtrbSkMnqkiEjdPmbk0PHqPEzSRmRsC4JZHOPJeH/+PSHsUgDXRB+dCXn85QOj6DDobaHaRGXADsBe4+BBa4x1oRM/pabZXx/wmR88W0b4jJ8nhngi6feJOPaz2oOmTiVSABHmZZDg76vUhayTF+aig9H5t64+SusKzcC86xXhG5X9txQYu4sQRkbsCaH8HudgA11B6aAvP80Ngh6y4Ha7LUwc2OspADj6T8hN9w=="}';
+			var sAuthInfo = sSampleAuthInfo;
+			try{
+				sAuthInfo = sap.byd.ui.mashup.context.system.OAuthInfo;
+			}catch(error){
+				sAuthInfo = sSampleAuthInfo;
+			}
+			var oOAuthInfo = JSON.parse(sAuthInfo);
+			var payload = JSON.stringify(oOAuthInfo.OAuthInfo || {});			
+			var signature = oOAuthInfo.signature || '';
+			var url = "https://mymashupservicei035706trial.hanatrial.ondemand.com/MyMashupService/MyMashupServiceServlet";
+			
+			$.ajax({
+				url : url,
+				type : "POST",
+				data : payload,
+				beforeSend: function(request) {
+				    request.setRequestHeader("x-c4c-signature", signature);
+				},
+			}).done(
+					function(data) {
+						console.log(data);
+						
+						var tableRowsHtml;
+						if(data.value.d && data.value.d.results && data.value.d.results.length){
+							for (var i = 0; i < data.value.d.results.length; i++) {
+								var item = data.value.d.results[i];
+								tableRowsHtml += '<tr><td><p>' + '<a><div>'
+										+ item.ProcessingTypeCodeText + '</div></a>' + '<a><div>'
+										+ item.CreationDateTime + '</div></a>'
+										+ '<a href="' + item.__metadata.uri + '"><div>'
+										+ item.Customer + '</div></a>' + '<a><div>'
+										+ item.Name + '</div></a>'  + '<a><div>'
+										+ item.ServicePriorityCodeText + '</div></a>'
+										+ '</p></td></tr>';
+							}							
+						}else{
+							tableRowsHtml += '<tr><td><p><div>No Tickets Found for ' + data.user + '</div></td></tr>'
+						}
+						
+						$("#items").append(tableRowsHtml);
+					}).fail(function() {
+				$("#items").append("error");
+			});
+		});
+	</script>
+	<div>recommended tickets</div>
+	<table id="items">
+	</table>
+</body>
+</html>
