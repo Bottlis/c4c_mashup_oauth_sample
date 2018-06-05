@@ -8,7 +8,7 @@ This sample code is not provided by SAP, and SAP is not responsible for the corr
 
 Please check https://github.com/SAP/C4CODATAAPIDEVGUIDE for more details regarding the setup of OAuth Client within C4C.
 
-
+# How to?
 How to get host and user information from C4C mashup?
 Take HTML mashup (Code) for example, 
 
@@ -56,7 +56,7 @@ Take HTML mashup (Code) for example,
 ```
 
 
-Please note!
+# Please note!
 The necessary cert and keystore files were not uploaded to this repository for security reasons, please follow the above mentioned  https://github.com/SAP/C4CODATAAPIDEVGUIDE to setup the needed artifacts for OAuth flow.
 
 # Download SAP Trust Center Root CA Certificate
