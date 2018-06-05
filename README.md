@@ -56,3 +56,5 @@ Take HTML mashup (Code) for example,
 ```
 
 
+Please note!
+The necessary cert and keystore files were not uploaded to this repository for security reasons, please follow the above mentioned  https://github.com/SAP/C4CODATAAPIDEVGUIDE to setup the needed artifacts for OAuth flow.
