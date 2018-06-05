@@ -10,7 +10,9 @@ Please check https://github.com/SAP/C4CODATAAPIDEVGUIDE for more details regardi
 
 
 How to get host and user information from C4C mashup?
-Take HTML mashup (Code) for example,
+Take HTML mashup (Code) for example, 
+
+1. use javascript to get the signed OAuthInfo from context sap.byd.ui.mashup.context.system.OAuthInfo
 ```javascript
         var sAuthInfo;
 	try{
@@ -37,3 +39,20 @@ Take HTML mashup (Code) for example,
 		//error handling
 	}); 
 ```
+
+
+2. parse OAuthInfo to get the payload and signature respectively
+3. post the payload to your SCP apps, and put the signature into request header with name "x-c4c-signature"
+4. in your SCP app, use the below sample code to verify the OAuthInfo,
+```java
+	String signature = request.getHeader("x-c4c-signature");
+	String payload = getBody(request);
+		
+	AuthInfoProcessor processor = new AuthInfoProcessor(payload, signature);
+	String host = processor.getHost();
+	String user = processor.getUser();
+	
+	//user and host should be used to authenticate the user following OAuth flow
+```
+
+
