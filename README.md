@@ -31,9 +31,9 @@ Take HTML mashup (Code) for example,
 		    request.setRequestHeader("x-c4c-signature", signature);
 		},
 	}).done(function(data) {
-//...
-//render the data
-}).fail(function() {
-//error handling
+		//...
+		//render the data
+	}).fail(function() {
+		//error handling
 	}); 
 ```
